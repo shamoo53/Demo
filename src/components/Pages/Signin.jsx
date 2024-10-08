@@ -1,48 +1,76 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { BiShow, BiHide } from "react-icons/bi";
 import { MdOutlineMail } from "react-icons/md";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 export default function Signin() {
   const [showPassword, setShowPassword] = useState(false);
 
- 
+  useEffect(() => {
+    AOS.init();
+  }, []);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+    },
+    validationSchema: Yup.object({
+      email: Yup.string().email('Invalid email address').required('Required'),
+      password: Yup.string()
+        .min(8, 'Password must be at least 8 characters long')
+        .matches(/[a-z]/, 'Password must contain at least one lowercase letter')
+        .matches(/[A-Z]/, 'Password must contain at least one uppercase letter')
+        .required('Required'),
+    }),
+    onSubmit: values => {
+      // handle form submission
+      console.log(values);
+    },
+  });
+
   return (
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center py-2 sm:px-6 lg:px-8">
         <div className="mt-0 sm:mx-auto sm:w-full sm:max-w-[480px]">
-          <div className="bg-white px-6 py-8 sm:px-12" >
+          <div className="bg-white px-6 py-8 sm:px-12">
             <div className="sm:mx-auto sm:w-full sm:max-w-md">
               <h2 className="mt-0 mb-2 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
                 Sign in
               </h2>
             </div>
             <div className="flex justify-center">
-              <form action="#" method="POST" className="space-y-2 border-none w-[350px]">
+              <form onSubmit={formik.handleSubmit} className="space-y-2 border-none w-[350px]">
                 <div data-aos="fade-right">
                   <label
                     htmlFor="email"
                     className="block text-sm font-medium leading-6 text-gray-900"
-
                   >
                     Email
                   </label>
-                  <div className="mt-1 relative" >
+                  <div className="mt-1 relative">
                     <input
                       id="email"
                       name="email"
                       type="email"
                       required
                       autoComplete="email"
-                      className="block bg-[#EBE7E7] w-full h-[48px] rounded-md border border-[#3A3A3A] py-1.5 text-gray-900 shadow-sm outline outline-1 outline-[#3A3A3A] placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pr-10"
+                      className={`block bg-[#EBE7E7] w-full h-[48px] rounded-md border ${formik.touched.email && formik.errors.email ? 'border-red-500' : 'border-[#3A3A3A]'} py-1.5 text-gray-900 shadow-sm outline outline-1 outline-[#3A3A3A] placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pr-10`}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.email}
                     />
+                    {formik.touched.email && formik.errors.email ? (
+                      <div className="text-red-500 text-sm mt-1">{formik.errors.email}</div>
+                    ) : null}
                     <MdOutlineMail className="absolute right-3 top-3 text-gray-400 text-xl pointer-events-none" />
                   </div>
                 </div>
@@ -61,8 +89,14 @@ export default function Signin() {
                       type={showPassword ? "text" : "password"}
                       required
                       autoComplete="current-password"
-                      className="block bg-[#EBE7E7] w-full h-[48px] rounded-md border border-[#3A3A3A] py-1.5 text-gray-900 shadow-sm outline outline-1 outline-[#3A3A3A] placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pr-10"
+                      className={`block bg-[#EBE7E7] w-full h-[48px] rounded-md border ${formik.touched.password && formik.errors.password ? 'border-red-500' : 'border-[#3A3A3A]'} py-1.5 text-gray-900 shadow-sm outline outline-1 outline-[#3A3A3A] placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pr-10`}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.password}
                     />
+                    {formik.touched.password && formik.errors.password ? (
+                      <div className="text-red-500 text-sm mt-1">{formik.errors.password}</div>
+                    ) : null}
                     <div
                       onClick={togglePasswordVisibility}
                       className="absolute right-3 top-3 text-gray-400 text-xl cursor-pointer"
@@ -77,8 +111,8 @@ export default function Signin() {
                         id="remember-me"
                         className="mr-1"
                       />
-                      <label htmlFor="remember-me" className="text-sm cursor-pointer font-semibold text-[#3A3A3A]  "
-                      data-aos="zoom-in-right"
+                      <label htmlFor="remember-me" className="text-sm cursor-pointer font-semibold text-[#3A3A3A]"
+                        data-aos="zoom-in-right"
                       >
                         Remember me
                       </label>
@@ -93,9 +127,9 @@ export default function Signin() {
                   </div>
                 </div>
 
-                <div >
+                <div>
                   <Link
-                    to='/dashboard'
+                  to='/dashboard'
                     type="submit"
                     className="flex w-full h-[48px] mb-4 justify-center rounded-md bg-[#413FA0] px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-[#413FA0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     data-aos="zoom-in-right"
@@ -120,19 +154,16 @@ export default function Signin() {
                   <div className="flex-grow border-t-2 border-[#CCCCCC]" />
                 </div>
                 <div className="relative flex justify-center text-sm font-medium leading-6"
-                data-aos="zoom-in-right"
+                  data-aos="zoom-in-right"
                 >
                   <span className="bg-white px-3 text-gray-900">Or continue with</span>
                 </div>
               </div>
 
-              <div className="mt-4 mb-3 flex w-full h-[48px] justify-center rounded-md bg-[#EBE7E7] px-3 py-1.5 text-[#000000] text-sm font-semibold leading-6 shadow-sm hover:bg-[#EBE7E7] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                
-              >
+              <div className="mt-4 mb-3 flex w-full h-[48px] justify-center rounded-md bg-[#EBE7E7] px-3 py-1.5 text-[#000000] text-sm font-semibold leading-6 shadow-sm hover:bg-[#EBE7E7] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                 <a
                   href="#"
                   className="flex items-center justify-center gap-3 w-full h-full"
-                  
                 >
                   <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5">
                     <path
@@ -152,23 +183,20 @@ export default function Signin() {
                       fill="#34A853"
                     />
                   </svg>
-                  <span className="text-sm font-semibold leading-6" >Continue with Google</span>
+                  <span className="text-sm font-semibold leading-6">Continue with Google</span>
                 </a>
               </div>
             </div>
             <div>
-            
-            <p className="mt-0  text-center text-base text-gray-500 w-full" >
-            By clicking the sign  agree to our{' '}
-            <a href="#" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
-             terms <span className="text-gray-500">and</span> policies.
-            </a>
-          </p>
+              <p className="mt-0 text-center text-base text-gray-500 w-full">
+                By clicking the sign  agree to our {' '}
+                <a href="#" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+                  terms <span className="text-gray-500">and</span> policies.
+                </a>
+              </p>
             </div>
           </div>
         </div>
-         
-        
       </div>
     </>
   );

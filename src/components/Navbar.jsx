@@ -33,10 +33,10 @@ const Navbar = () => {
            data-aos="fade-up"
            data-aos-anchor-placement="top-bottom"
       >
-        <div className="flex items-center gap-2 cursor-pointer ">
+        <Link to='/' className="flex items-center gap-2 cursor-pointer ">
           <FiHome />
           <h2>Home</h2>
-        </div>
+        </Link>
         <div className="flex items-center gap-2 cursor-pointer">
           <FiInfo />
           <h2>About</h2>
@@ -87,10 +87,10 @@ const Navbar = () => {
       {isOpen && (
         <div className="absolute top-[85px] left-0 w-full bg-white shadow-lg rounded-lg py-2 z-50">
           <div className="flex flex-col items-start px-4">
-            <div className="flex items-center gap-2 py-2">
+            <Link to='/' className="flex items-center gap-2 py-2 ">
               <FiHome />
               <h2>Home</h2>
-            </div>
+            </Link>
             <div className="flex items-center gap-2 py-2">
               <FiInfo />
               <h2>About</h2>

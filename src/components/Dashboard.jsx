@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import hamburgericon from '../assets/hamburger.svg';
 import userIcon from '../assets/user-icon.svg';
 import { RxDashboard } from "react-icons/rx";
@@ -6,27 +6,15 @@ import { FiSettings } from "react-icons/fi";
 import ButtonSearch from '../components/ButtonSearch'; // ButtonSearch Component
 import CardComponent from '../components/CardComponent';
 import Cards from './Cards';
+import CardText from './CardText';
 import Pagination from '../components/Pagination';
 import EventModal from './Modal/EventModal'; // Modal Import
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
 import {
-  Dialog,
-  DialogBackdrop,
-  DialogPanel,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuItems,
-  TransitionChild,
-} from '@headlessui/react';
-import {
-  Bars3Icon,
-  BellIcon,
-  HomeIcon,
-  XMarkIcon,
-} from '@heroicons/react/24/outline';
+  Dialog, DialogBackdrop,DialogPanel,Menu,MenuButton, MenuItem,MenuItems, TransitionChild,} from '@headlessui/react';
+import {Bars3Icon,BellIcon, HomeIcon, XMarkIcon,} from '@heroicons/react/24/outline';
 
 const navigation = [
   { name: 'Dashboard', href: '#', icon: HomeIcon, current: true },
@@ -43,6 +31,11 @@ function classNames(...classes) {
 export default function Example() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal visibility state
+  const [events, setEvents] = useState([]); // State to store events
+
+  useEffect(() => {
+    AOS.init({ duration: 1000 });
+  }, []);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -50,6 +43,10 @@ export default function Example() {
 
   const closeModal = () => {
     setIsModalOpen(false);
+  };
+
+  const addEvent = (event) => {
+    setEvents((prevEvents) => [...prevEvents, event]);
   };
 
   return (
@@ -187,33 +184,61 @@ export default function Example() {
               >
                 <CardComponent />
               </div>
-              <div className='pt-4'
-              data-aos="fade-down-right"
-              >
-                <Cards />
-              </div>
-              <div className='pt-4'
-              data-aos="fade-down-left"
-              >
-                <Cards />
-              </div>
-              <div className='pt-4'
-              data-aos="fade-down-right"
-              >
-                <Cards />
-              </div>
-              <div className='pt-4'
-              >
-                <Cards />
-              </div>
-              <div className='pt-4'
-               data-aos="fade-down"
-              >
-                <Cards />
-              </div>
+              
+              {events.map((event, index) => (
+                <div key={index} className='pt-4'
+                  data-aos="fade-down-right"
+                >
+                  <Cards data={[event]} />
+                </div>
+                
+              ))}
 
               {/* Modal Component */}
-              <EventModal isOpen={isModalOpen} closeModal={closeModal} />
+          <div
+          data-aos="zoom-in-up"
+
+          >
+
+             
+              
+              <div className='mt-2'
+             
+               
+              >
+              <CardText/>
+              </div>
+
+              <div className='mt-2'
+        
+              
+              >
+              <CardText/>
+              </div>
+
+              <div className='mt-2'
+              
+              >
+              <CardText/>
+              </div>
+
+              <div className='mt-2'
+              
+              >
+              <CardText/>
+              </div>
+
+              <div className='mt-2'
+              
+              >
+              <CardText/>
+              </div>
+           </div>
+
+              
+              
+              <EventModal isOpen={isModalOpen} closeModal={closeModal} addEvent={addEvent} />
+              
 
               <Pagination />
             </div>
