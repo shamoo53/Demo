@@ -1,17 +1,41 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BiShow, BiHide } from "react-icons/bi";
 import { MdOutlineMail } from "react-icons/md";
 import { Link } from "react-router-dom";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 export default function CreateAccount() {
   const [showPassword, setShowPassword] = useState(false);
 
+  useEffect(() => {
+    AOS.init();
+  }, []);
+
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+    },
+    validationSchema: Yup.object({
+      email: Yup.string().email('Invalid email address').required('Required'),
+      password: Yup.string()
+        .min(8, 'Password must be at least 8 characters long')
+        .matches(/[a-z]/, 'Password must contain at least one lowercase letter')
+        .matches(/[A-Z]/, 'Password must contain at least one uppercase letter')
+        .required('Required'),
+    }),
+    onSubmit: values => {
+      // handle form submission
+      console.log(values);
+    },
+  });
 
   return (
     <>
@@ -24,7 +48,7 @@ export default function CreateAccount() {
               </h2>
             </div>
             <div className="flex justify-center">
-              <form action="#" method="POST" className="space-y-2 border-none w-[350px]">
+              <form onSubmit={formik.handleSubmit} className="space-y-2 border-none w-[350px]">
                 <div data-aos="fade-up">
                   <label
                     htmlFor="email"
@@ -39,8 +63,14 @@ export default function CreateAccount() {
                       type="email"
                       required
                       autoComplete="email"
-                      className="block bg-[#EBE7E7] w-full h-[48px] rounded-md border border-[#3A3A3A] py-1.5 text-gray-900 shadow-sm outline outline-1 outline-[#3A3A3A] placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pr-10"
+                      className={`block bg-[#EBE7E7] w-full h-[48px] rounded-md border ${formik.touched.email && formik.errors.email ? 'border-red-500' : 'border-[#3A3A3A]'} py-1.5 text-gray-900 shadow-sm outline outline-1 outline-[#3A3A3A] placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pr-10`}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.email}
                     />
+                    {formik.touched.email && formik.errors.email ? (
+                      <div className="text-red-500 text-sm mt-1">{formik.errors.email}</div>
+                    ) : null}
                     <MdOutlineMail className="absolute right-3 top-3 text-gray-400 text-xl pointer-events-none" />
                   </div>
                 </div>
@@ -59,8 +89,14 @@ export default function CreateAccount() {
                       type={showPassword ? "text" : "password"}
                       required
                       autoComplete="current-password"
-                      className="block bg-[#EBE7E7] w-full h-[48px] rounded-md border border-[#3A3A3A] py-1.5 text-gray-900 shadow-sm outline outline-1 outline-[#3A3A3A] placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pr-10"
+                      className={`block bg-[#EBE7E7] w-full h-[48px] rounded-md border ${formik.touched.password && formik.errors.password ? 'border-red-500' : 'border-[#3A3A3A]'} py-1.5 text-gray-900 shadow-sm outline outline-1 outline-[#3A3A3A] placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pr-10`}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.password}
                     />
+                    {formik.touched.password && formik.errors.password ? (
+                      <div className="text-red-500 text-sm mt-1">{formik.errors.password}</div>
+                    ) : null}
                     <div
                       onClick={togglePasswordVisibility}
                       className="absolute right-3 top-3 text-gray-400 text-xl cursor-pointer"
@@ -68,16 +104,14 @@ export default function CreateAccount() {
                       {showPassword ? <BiHide /> : <BiShow />}
                     </div>
                   </div>
-                  <div className="flex justify-between mt-1 mb-2 items-center"
-                  data-aos="fade-down"
-                  >
+                  <div className="flex justify-between mt-1 mb-2 items-center" data-aos="fade-down">
                     <div className="flex items-center">
                       <input
                         type="checkbox"
                         id="remember-me"
                         className="mr-1"
                       />
-                      <label htmlFor="remember-me" className="text-sm text-[#3A3A3A] font-semibold cursor-pointer ">
+                      <label htmlFor="remember-me" className="text-sm text-[#3A3A3A] font-semibold cursor-pointer">
                         Remember me
                       </label>
                     </div>
@@ -89,13 +123,11 @@ export default function CreateAccount() {
                     </Link>
                   </div>
                 </div>
-                
-                
+
                 <div data-aos="fade-down">
                   <button
                     type="submit"
-                    className="flex w-full h-[48px] mb-4 justify-center rounded-md bg-[#413FA0] px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-[#413FA0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 "
-                    
+                    className="flex w-full h-[48px] mb-4 justify-center rounded-md bg-[#413FA0] px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-[#413FA0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
                     Create Account
                   </button>
@@ -104,11 +136,9 @@ export default function CreateAccount() {
                 <Link to='/'
                   type="button"
                   className="flex w-full h-[48px] justify-center rounded-md bg-[#EBE7E7] px-3 py-1.5 text-[#000000] text-sm font-semibold leading-6 shadow-sm outline outline-1 outline-[#3A3A3A] border border-[#3A3A3A] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                  
                 >
                   Sign in
                 </Link>
-
               </form>
             </div>
 
@@ -117,16 +147,12 @@ export default function CreateAccount() {
                 <div aria-hidden="true" className="absolute inset-0 flex items-center">
                   <div className="flex-grow border-t-2 border-[#CCCCCC]" />
                 </div>
-                <div className="relative flex justify-center text-sm font-medium leading-6"
-              
-                >
+                <div className="relative flex justify-center text-sm font-medium leading-6">
                   <span className="bg-white px-3 text-gray-900">Or continue with</span>
                 </div>
               </div>
 
-              <div className="mt-4 flex w-full mb-3 h-[48px] justify-center rounded-md bg-[#EBE7E7] px-3 py-1.5 text-[#000000] text-sm font-semibold leading-6 shadow-sm hover:bg-[#EBE7E7] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              
-              >
+              <div className="mt-4 flex w-full mb-3 h-[48px] justify-center rounded-md bg-[#EBE7E7] px-3 py-1.5 text-[#000000] text-sm font-semibold leading-6 shadow-sm hover:bg-[#EBE7E7] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                 <a
                   href="#"
                   className="flex items-center justify-center gap-3 w-full h-full"
@@ -154,15 +180,13 @@ export default function CreateAccount() {
               </div>
             </div>
             <p className="mt-0 text-center text-base text-gray-500 w-full">
-            By clicking the sign  agree to our{' '}
+              By clicking the sign you agree to our{' '}
               <a href="#" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
-                   terms <span className="text-gray-500">and</span> policies.
-                  </a>
+                terms <span className="text-gray-500">and</span> policies.
+              </a>
             </p>
           </div>
-        
         </div>
-      
       </div>
     </>
   );
