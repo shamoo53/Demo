@@ -1,4 +1,6 @@
 import React from 'react';
+import Doris from '../assets/doris.svg';
+import Bee from '../assets/bee.svg';
 
 export default function Cards({ data }) {
   return (
@@ -10,10 +12,14 @@ export default function Cards({ data }) {
               type="checkbox"
               className="form-checkbox h-5 w-5 text-gray-600 rounded border-gray-300 mr-3"
             />
-            <img src={item.icon} alt="User Icon" className="h-6 w-6" />
-            <div className="flex-1 text-gray-600 font-semibold pl-8 text-sm leading-5">{item.task}</div>
+            <img src={item.Doris} alt="User Icon" className="h-6 w-6" />
+            <div className="flex-1 text-gray-600 font-semibold pl-8 text-sm leading-5">{item.eventTitle}</div>
             <div className="flex-1 text-gray-600 font-semibold text-sm leading-5">{item.date}</div>
-            <div className="flex-1 text-gray-600 font-semibold text-sm leading-5">
+            <div className="flex-1 text-gray-600 font-semibold text-sm   leading-5 flex items-center">
+              <img src={Bee} alt="Bee Icon" className="h-6 w-6 mr-2" />
+              <span className="items-center">{item.role}</span>
+            </div>
+            <div className="flex-1 text-gray-600 font-semibold text-sm leading-5 ">
               <ul className="list-disc list-inside font-semibold text-sm leading-5">
                 <li>{item.description}</li>
               </ul>

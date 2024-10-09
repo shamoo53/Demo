@@ -9,6 +9,7 @@ import ForgottenPassword from "./components/Pages/ForgottenPassword";
 import Dashboard from './components/Dashboard' 
 
 
+
 import React, { useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -41,7 +42,7 @@ const router = createBrowserRouter([
     element: <DashLayout />,
     children: [
       {
-     
+         
       }
       
     ]

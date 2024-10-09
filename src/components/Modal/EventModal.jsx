@@ -76,13 +76,14 @@
 // }
 
 
-// this is the other modal
-import React, { useState } from 'react';
+// this is the other modalimport React, { useState } from 'react';import { useState } from 'react';
 import { Dialog } from '@headlessui/react';
-
+import Doris from '../../assets/doris.svg';
+import { useState } from 'react';
+import DatePicker from 'react-datepicker';
 
 export default function EventModal({ isOpen, closeModal, addEvent }) {
-  const [event, setEvent] = useState({ eventTitle: '', description: '', date: '', role: '' });
+  const [event, setEvent] = useState({ eventTitle: '', description: '', date: '', role: '', Doris: Doris });
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -106,17 +107,14 @@ export default function EventModal({ isOpen, closeModal, addEvent }) {
           {/* Modal Header */}
           <div className="flex justify-center items-center border-b pb-3 relative">
             {/* "+" button on the left-hand side of the text */}
-            <button className="w-8 h-8 bg-[#000000] text-white rounded-full flex items-center justify-center hover:bg-[#000000] mr-2">
+            <button className="w-6 h-6 bg-[#000000] text-white rounded-full flex items-center justify-center hover:bg-[#000000] mr-2">
               +
             </button>
 
             {/* "Add Event" text */}
             <span className="text-lg font-semibold">Add Event</span>
-            
-
 
             {/* "×" close button */}
-          
             <button
               onClick={closeModal}
               className="absolute right-4 top-2 text-2xl font-bold text-gray-600 hover:text-gray-800"

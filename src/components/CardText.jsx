@@ -1,23 +1,16 @@
 import React from 'react';
 import Doris from '../assets/doris.svg';
-import Bee from '../assets/bee.svg';
-import newIcon from '../assets/icontwo.svg'
-import three from '../assets/iconthree.svg'
-import four from '../assets/iconfour.svg'
-import five from '../assets/iconfive.svg'
-import six from '../assets/iconsix.svg'
 
-const CardText = () => {
+const CardText = ({ BeeIcon }) => {
   const data = [
     {
-      Bee: Bee,
+      Bee: BeeIcon,
       task: 'Take recent orders on Jumia',
       date: 'August 23, 2023',
       Doris: Doris,
       name: 'Doris K. John',
       description: 'Required to look up items on Jumia, select required item place',
     },
-  
   ];
 
   return (
