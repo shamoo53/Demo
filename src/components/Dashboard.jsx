@@ -17,6 +17,11 @@ import three from '../assets/iconthree.svg';
 import four from '../assets/iconfour.svg';
 import five from '../assets/iconfive.svg';
 import six from '../assets/iconsix.svg';
+import seven from '../assets/seven.svg';
+import eight from '../assets/eight.svg';
+import  {FiHome}  from 'react-icons/fi'
+import { Link } from "react-router-dom";
+
 
 import {
   Dialog, DialogBackdrop, DialogPanel, Menu, MenuButton, MenuItem, MenuItems, TransitionChild,
@@ -139,8 +144,13 @@ export default function Example() {
               <Bars3Icon aria-hidden="true" className="h-6 w-6" />
             </button>
 
-            <div className="flex flex-1 items-center justify-between lg:gap-x-6 ">
-              <span className="text-xl font-semibold leading-5 text-gray-900">Event List</span>
+            <div className="flex flex-1 items-center justify-between lg:gap-x-6">
+              <div className="relative flex items-center">
+                <Link to="/">
+                  <FiHome className="h-5 w-5 text-gray-600 mr-2" />
+                </Link>
+                <span className="text-xl font-semibold leading-5 text-gray-900">Event List</span>
+              </div>
               <div className="flex items-center gap-x-4 lg:gap-x-6">
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative">
@@ -218,8 +228,12 @@ export default function Example() {
       
         <CardText BeeIcon={four} />
       
-      
         <CardText BeeIcon={five} />
+        <CardText BeeIcon={seven} />
+        <CardText BeeIcon={eight} />
+        <CardText BeeIcon={userIcon} />
+       
+
       </div>
       </div>
         </div> 
