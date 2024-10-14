@@ -31,7 +31,7 @@ export default function ForgottenPassword() {
                       type="email"
                       required
                       autoComplete="email"
-                      className="block bg-[#EBE7E7] w-full h-[48px] rounded-md border border-[#3A3A3A] py-1.5 text-gray-900 shadow-sm outline outline-1 outline-[#3A3A3A] placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pr-10"
+                      className="block bg-[#EBE7E7] w-full h-[48px] rounded-md border border-[#3A3A3A] pl-2 py-1.5 text-gray-900 shadow-sm outline outline-1 outline-[#3A3A3A] placeholder:text-gray-400  sm:text-sm sm:leading-6 pr-10"
                     />
                     <MdOutlineMail className="absolute right-3 top-3 text-gray-400 text-xl pointer-events-none" />
                   </div>

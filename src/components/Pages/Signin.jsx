@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { BiShow, BiHide } from "react-icons/bi";
 import { MdOutlineMail } from "react-icons/md";
 import AOS from 'aos';
@@ -9,6 +9,7 @@ import * as Yup from 'yup';
 
 export default function Signin() {
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     AOS.init();
@@ -24,16 +25,17 @@ export default function Signin() {
       password: '',
     },
     validationSchema: Yup.object({
-      email: Yup.string().email('Invalid email address').required('Required'),
+      email: Yup.string().email('Invalid email address').required('Email is required'),
       password: Yup.string()
         .min(8, 'Password must be at least 8 characters long')
         .matches(/[a-z]/, 'Password must contain at least one lowercase letter')
         .matches(/[A-Z]/, 'Password must contain at least one uppercase letter')
-        .required('Required'),
+        .required('Password is required'),
     }),
     onSubmit: values => {
       // handle form submission
       console.log(values);
+      navigate('/dashboard'); // navigate to another page after successful form submission
     },
   });
 
@@ -63,7 +65,7 @@ export default function Signin() {
                       type="email"
                       required
                       autoComplete="email"
-                      className={`block bg-[#EBE7E7] w-full h-[48px] rounded-md border ${formik.touched.email && formik.errors.email ? 'border-red-500' : 'border-[#3A3A3A]'} py-1.5 text-gray-900 shadow-sm outline outline-1 outline-[#3A3A3A] placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pr-10`}
+                      className={`block bg-[#EBE7E7] w-full h-[48px] rounded-md border ${formik.touched.email && formik.errors.email ? 'border-red-500' : 'border-[#3A3A3A]'} pl-2 py-1.5 text-gray-900 shadow-sm outline outline-1 outline-[#3A3A3A] placeholder:text-gray-400 focus:ring-2  sm:text-sm sm:leading-6 pr-10`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.email}
@@ -89,7 +91,7 @@ export default function Signin() {
                       type={showPassword ? "text" : "password"}
                       required
                       autoComplete="current-password"
-                      className={`block bg-[#EBE7E7] w-full h-[48px] rounded-md border ${formik.touched.password && formik.errors.password ? 'border-red-500' : 'border-[#3A3A3A]'} py-1.5 text-gray-900 shadow-sm outline outline-1 outline-[#3A3A3A] placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pr-10`}
+                      className={`block bg-[#EBE7E7] w-full h-[48px] rounded-md border ${formik.touched.password && formik.errors.password ? 'border-red-500' : 'border-[#3A3A3A]'} pl-2 py-1.5 text-gray-900 shadow-sm outline outline-1 outline-[#3A3A3A] placeholder:text-gray-400 focus:ring-2  sm:text-sm sm:leading-6 pr-10`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.password}
@@ -111,7 +113,7 @@ export default function Signin() {
                         id="remember-me"
                         className="mr-1"
                       />
-                      <label htmlFor="remember-me" className="text-sm cursor-pointer font-semibold text-[#3A3A3A]"
+                      <label htmlFor="remember-me" className="text-sm cursor-pointer font-semibold text-[#3A3A3A] hover:text-[#413FA0]"
                         data-aos="zoom-in-right"
                       >
                         Remember me
@@ -128,14 +130,13 @@ export default function Signin() {
                 </div>
 
                 <div>
-                  <Link
-                  to='/dashboard'
+                  <button
                     type="submit"
                     className="flex w-full h-[48px] mb-4 justify-center rounded-md bg-[#413FA0] px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-[#413FA0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     data-aos="zoom-in-right"
                   >
                     Sign in
-                  </Link>
+                  </button>
                 </div>
 
                 <Link

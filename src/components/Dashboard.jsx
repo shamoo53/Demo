@@ -12,15 +12,16 @@ import EventModal from './Modal/EventModal'; // Modal Import
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import Bee from '../assets/bee.svg';
-import newIcon from '../assets/icontwo.svg'
-import three from '../assets/iconthree.svg'
-import four from '../assets/iconfour.svg'
-import five from '../assets/iconfive.svg'
-import six from '../assets/iconsix.svg'
+import newIcon from '../assets/icontwo.svg';
+import three from '../assets/iconthree.svg';
+import four from '../assets/iconfour.svg';
+import five from '../assets/iconfive.svg';
+import six from '../assets/iconsix.svg';
 
 import {
-  Dialog, DialogBackdrop,DialogPanel,Menu,MenuButton, MenuItem,MenuItems, TransitionChild,} from '@headlessui/react';
-import {Bars3Icon,BellIcon, HomeIcon, XMarkIcon,} from '@heroicons/react/24/outline';
+  Dialog, DialogBackdrop, DialogPanel, Menu, MenuButton, MenuItem, MenuItems, TransitionChild,
+} from '@headlessui/react';
+import { Bars3Icon, BellIcon, HomeIcon, XMarkIcon } from '@heroicons/react/24/outline';
 
 const navigation = [
   { name: 'Dashboard', href: '#', icon: HomeIcon, current: true },
@@ -54,7 +55,6 @@ export default function Example() {
   const addEvent = (event) => {
     setEvents((prevEvents) => [...prevEvents, event]);
   };
-  
 
   return (
     <>
@@ -115,15 +115,14 @@ export default function Example() {
               <ul role="list" className="flex flex-1 flex-col gap-y-7">
                 <li>
                   <ul role="list" className="-mx-2 mt-6 space-y-10"> 
-                  <div className="relative flex items-center justify-center">
-                  <div>
-
-                  <div className="absolute inset-y-0 left-0 right-0 w-full bg-white rounded-l-[15px] py-4 " />
-                  <RxDashboard className="relative  pt-2 z-10 cursor-pointer" style={{ fontSize: '24px', color: '#413FA0' }} />
-                </div>
+                  <div className="relative flex items-center justify-center transform transition-transform hover:scale-110 hover:shadow-lg">
+                    <div>
+                      <div className="absolute inset-y-0 left-0 right-0 w-full bg-white rounded-l-[15px] py-4 " />
+                      <RxDashboard className="relative  pt-2 z-10 cursor-pointer" style={{ fontSize: '24px', color: '#413FA0' }} />
+                    </div>
                   </div>
 
-                    <div className="relative flex items-center justify-center  cursor-pointer">
+                    <div className="relative flex items-center justify-center transform transition-transform hover:scale-110 hover:shadow-lg cursor-pointer">
                       <FiSettings className="relative z-10" style={{ fontSize: '20px', color: '#ffffff' }} />
                     </div>
                   </ul>
@@ -187,38 +186,43 @@ export default function Example() {
           </div>
 
           <main className="py-2 bg-[#F2F2F2]">
-            <div className="px-4 sm:px-6 lg:px-8  bg-[#F2F2F2]">
+            <div className="px-4 sm:px-6 lg:px-8  bg-[#F2F2F2] overflow-auto">
               {/* Your content */}
               <ButtonSearch openModal={openModal} />
-      <div className='pt-4' data-aos="fade-up">
-        <CardComponent />
-      </div>
+      
 
-      {events.map((event, index) => (
-        <div key={index} className='pt-4' data-aos="fade-down-right">
-          <Cards data={[event]} />
-        </div>
-      ))}
 
       {/* Modal Component */}
       <div data-aos="zoom-in-up">
-      <div className='mt-2'>
+      <div className=''>
+      <div className='mt-2 space-y-2 w-full  overflow-x-auto'>
+      
+      
+      <div className='pt-4 ' data-aos="fade-up">
+      
+        <CardComponent />
+      </div>
+      
+      {events.map((event, index) => (
+        <div key={index} className='pt-4  w-full ' data-aos="fade-down-right">
+          <Cards data={[event]} />
+        </div>
+      ))}
         <CardText BeeIcon={Bee} />
-      </div>
-      <div className='mt-2'>
+        
         <CardText BeeIcon={newIcon} />
-      </div>
-      <div className='mt-2'>
+      
+      
         <CardText BeeIcon={three} />
-      </div>
-      <div className='mt-2'>
+      
+      
         <CardText BeeIcon={four} />
-      </div>
-      <div className='mt-2'>
+      
+      
         <CardText BeeIcon={five} />
       </div>
       </div>
-
+        </div> 
       <EventModal isOpen={isModalOpen} closeModal={closeModal} addEvent={addEvent} />
 
 

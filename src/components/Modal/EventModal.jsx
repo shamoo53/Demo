@@ -1,93 +1,19 @@
-// import { useState } from 'react';
-// import { Dialog } from '@headlessui/react';
-
-// export default function EventModal({ isOpen, closeModal, addEvent }) {
-//   const [event, setEvent] = useState({ task: '', date: '', description: '' });
-
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-//     addEvent(event);
-//     closeModal();
-//   };
-
-//   const handleChange = (e) => {
-//     setEvent({
-//       ...event,
-//       [e.target.name]: e.target.value,
-//     });
-//   };
-
-//   return (
-//     <Dialog open={isOpen} onClose={closeModal} className="relative z-50">
-//       <div className="fixed inset-0 bg-black bg-opacity-30" aria-hidden="true" />
-//       <div className="fixed inset-0 flex items-center justify-center p-4">
-//         <Dialog.Panel className="mx-auto max-w-sm rounded bg-white p-6">
-//           <Dialog.Title className="text-lg font-medium">Add Event</Dialog.Title>
-//           <form onSubmit={handleSubmit}>
-//             <div className="mt-4">
-//               <label className="block text-sm font-medium text-gray-700">Task</label>
-//               <input
-//                 type="text"
-//                 name="task"
-//                 value={event.task}
-//                 onChange={handleChange}
-//                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-//               />
-//             </div>
-//             <div className="mt-4">
-//               <label className="block text-sm font-medium text-gray-700">Date</label>
-//               <input
-//                 type="date"
-//                 name="date"
-//                 value={event.date}
-//                 onChange={handleChange}
-//                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-//               />
-//             </div>
-//             <div className="mt-4">
-//               <label className="block text-sm font-medium text-gray-700">Description</label>
-//               <textarea
-//                 name="description"
-//                 value={event.description}
-//                 onChange={handleChange}
-//                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-//               />
-//             </div>
-//             <div className="mt-4 flex justify-end">
-//               <button
-//                 type="button"
-//                 onClick={closeModal}
-//                 className="mr-2 inline-flex justify-center rounded-md border border-transparent bg-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:ring-offset-2"
-//               >
-//                 Cancel
-//               </button>
-//               <button
-//                 type="submit"
-//                 className="inline-flex justify-center rounded-md border border-transparent bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-//               >
-//                 Add Event
-//               </button>
-//             </div>
-//           </form>
-//         </Dialog.Panel>
-//       </div>
-//     </Dialog>
-//   );
-// }
-
-
-// this is the other modalimport React, { useState } from 'react';import { useState } from 'react';
 import { Dialog } from '@headlessui/react';
 import Doris from '../../assets/doris.svg';
 import { useState } from 'react';
 import DatePicker from 'react-datepicker';
+import { format } from 'date-fns';
+import 'react-datepicker/dist/react-datepicker.css';
 
 export default function EventModal({ isOpen, closeModal, addEvent }) {
-  const [event, setEvent] = useState({ eventTitle: '', description: '', date: '', role: '', Doris: Doris });
+  const [event, setEvent] = useState({ eventTitle: '', description: '', date: null, role: '', Doris: Doris });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    addEvent(event);
+    addEvent({
+      ...event,
+      date: event.date ? format(event.date, 'MMMM dd, yyyy') : '', // Format date here
+    });
     closeModal();
   };
 
@@ -95,6 +21,13 @@ export default function EventModal({ isOpen, closeModal, addEvent }) {
     setEvent({
       ...event,
       [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleDateChange = (date) => {
+    setEvent({
+      ...event,
+      date: date,
     });
   };
 
@@ -106,15 +39,10 @@ export default function EventModal({ isOpen, closeModal, addEvent }) {
         <div className="bg-white rounded-lg p-8 w-full max-w-lg relative">
           {/* Modal Header */}
           <div className="flex justify-center items-center border-b pb-3 relative">
-            {/* "+" button on the left-hand side of the text */}
             <button className="w-6 h-6 bg-[#000000] text-white rounded-full flex items-center justify-center hover:bg-[#000000] mr-2">
               +
             </button>
-
-            {/* "Add Event" text */}
             <span className="text-lg font-semibold">Add Event</span>
-
-            {/* "×" close button */}
             <button
               onClick={closeModal}
               className="absolute right-4 top-2 text-2xl font-bold text-gray-600 hover:text-gray-800"
@@ -161,13 +89,11 @@ export default function EventModal({ isOpen, closeModal, addEvent }) {
               <div className="flex justify-between gap-4">
                 <div className="w-full">
                   <label className="block mb-2 font-semibold">Date</label>
-                  <input
-                    type="date"
-                    id="date"
-                    name="date"
+                  <DatePicker
+                    selected={event.date}
+                    onChange={handleDateChange}
                     className="w-full px-3 py-2 border rounded-md"
-                    value={event.date}
-                    onChange={handleChange}
+                    placeholderText="Select a date"
                     required
                   />
                 </div>

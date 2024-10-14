@@ -24,12 +24,12 @@ export default function CreateAccount() {
       password: '',
     },
     validationSchema: Yup.object({
-      email: Yup.string().email('Invalid email address').required('Required'),
+      email: Yup.string().email('Invalid email address').required(' Email is Required'),
       password: Yup.string()
         .min(8, 'Password must be at least 8 characters long')
         .matches(/[a-z]/, 'Password must contain at least one lowercase letter')
         .matches(/[A-Z]/, 'Password must contain at least one uppercase letter')
-        .required('Required'),
+        .required(' Password is Required'),
     }),
     onSubmit: values => {
       // handle form submission
@@ -63,7 +63,7 @@ export default function CreateAccount() {
                       type="email"
                       required
                       autoComplete="email"
-                      className={`block bg-[#EBE7E7] w-full h-[48px] rounded-md border ${formik.touched.email && formik.errors.email ? 'border-red-500' : 'border-[#3A3A3A]'} py-1.5 text-gray-900 shadow-sm outline outline-1 outline-[#3A3A3A] placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pr-10`}
+                      className={`block bg-[#EBE7E7] w-full h-[48px] rounded-md border ${formik.touched.email && formik.errors.email ? 'border-red-500' : 'border-[#3A3A3A]'} pl-2 py-1.5 text-gray-900 shadow-sm outline outline-1 outline-[#3A3A3A] placeholder:text-gray-400 focus:ring-2  sm:text-sm sm:leading-6 pr-10`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.email}
@@ -89,7 +89,7 @@ export default function CreateAccount() {
                       type={showPassword ? "text" : "password"}
                       required
                       autoComplete="current-password"
-                      className={`block bg-[#EBE7E7] w-full h-[48px] rounded-md border ${formik.touched.password && formik.errors.password ? 'border-red-500' : 'border-[#3A3A3A]'} py-1.5 text-gray-900 shadow-sm outline outline-1 outline-[#3A3A3A] placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pr-10`}
+                      className={`block bg-[#EBE7E7] w-full h-[48px] rounded-md border ${formik.touched.password && formik.errors.password ? 'border-red-500' : 'border-[#3A3A3A]'} pl-2 py-1.5 text-gray-900 shadow-sm outline outline-1 outline-[#3A3A3A] placeholder:text-gray-400 focus:ring-2  sm:text-sm sm:leading-6 pr-10`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.password}
@@ -111,7 +111,7 @@ export default function CreateAccount() {
                         id="remember-me"
                         className="mr-1"
                       />
-                      <label htmlFor="remember-me" className="text-sm text-[#3A3A3A] font-semibold cursor-pointer">
+                      <label htmlFor="remember-me" className="text-sm text-[#3A3A3A] hover:text-[#413FA0] font-semibold cursor-pointer">
                         Remember me
                       </label>
                     </div>

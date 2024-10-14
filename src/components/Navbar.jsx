@@ -20,7 +20,8 @@ const Navbar = () => {
   };
 
   return (
-    <div className="navbar bg-[#FFFFFF] shadow-md h-[85px] w-full">
+   <div className="navbar bg-[#FFFFFF] shadow-md h-[85px]">
+     <div className=" w-full max-w-[1440px] mx-auto justify-between  ">
       <div className="navbar-start pl-4 lg:pl-14"
            data-aos="zoom-in-right"
       >
@@ -29,42 +30,42 @@ const Navbar = () => {
         </a>
       </div>
 
-      <div className="navbar-center hidden lg:flex gap-20 font-semibold text-[#000000]"
+      <div className="navbar-center hidden md:flex gap-20 font-semibold text-[#000000]"
            data-aos="fade-up"
            data-aos-anchor-placement="top-bottom"
       >
-        <Link to='/' className="flex items-center gap-2 cursor-pointer ">
+        <Link to='/' className="flex items-center gap-2 cursor-pointer transform transition-transform hover:scale-110 hover:shadow-lg">
           <FiHome />
           <h2>Home</h2>
         </Link>
-        <div className="flex items-center gap-2 cursor-pointer">
+        <div className="flex items-center gap-2 cursor-pointer transform transition-transform hover:scale-110 hover:shadow-lg">
           <FiInfo />
           <h2>About</h2>
         </div>
-        <div className="flex items-center gap-2 cursor-pointer">
+        <div className="flex items-center gap-2 cursor-pointer transform transition-transform hover:scale-110 hover:shadow-lg">
         <FiLayers />
           <h2>Services</h2>
         </div>
-        <div className="flex items-center gap-2 cursor-pointer">
+        <div className="flex items-center gap-2 cursor-pointer transform transition-transform hover:scale-110 hover:shadow-lg">
           <FiPhone />
           <h2>Contact</h2>
         </div>
       </div>
 
       <div 
-        className="navbar-end hidden lg:flex pr-4 lg:pr-14" 
+        className="navbar-end hidden md:flex pr-4 lg:pr-14" 
         data-aos="zoom-in-left"
       >
         <Link
           to="/"
-          className="bg-[#413FA0] w-[100px] h-[39px] text-[#ffff] text-sm font-semibold outline-none border-none rounded-[5px] semi-bold px-6 py-2"
+          className="bg-[#413FA0] w-[100px] h-[39px] text-[#ffff] text-sm font-semibold outline-none border-none rounded-[5px] semi-bold px-6 py-2 transform transition-transform hover:scale-110 hover:shadow-lg"
         >
           Sign in
         </Link>
       </div>
 
       {/* Hamburger Menu */}
-      <div className="navbar-end lg:hidden pr-4">
+      <div className=" md:hidden pr-4">
         <button onClick={toggleMenu} className="btn btn-square btn-ghost">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -87,25 +88,25 @@ const Navbar = () => {
       {isOpen && (
         <div className="absolute top-[85px] left-0 w-full bg-white shadow-lg rounded-lg py-2 z-50">
           <div className="flex flex-col items-start px-4">
-            <Link to='/' className="flex items-center gap-2 py-2 ">
+            <Link to='/' className="flex items-center gap-2 py-2 transform transition-transform hover:scale-110 hover:shadow-lg">
               <FiHome />
               <h2>Home</h2>
             </Link>
-            <div className="flex items-center gap-2 py-2">
+            <div className="flex items-center gap-2 py-2 transform transition-transform hover:scale-110 hover:shadow-lg">
               <FiInfo />
               <h2>About</h2>
             </div>
-            <div className="flex items-center gap-2 py-2">
+            <div className="flex items-center gap-2 py-2 transform transition-transform hover:scale-110 hover:shadow-lg">
             <FiLayers />
               <h2>Services</h2>
             </div>
-            <div className="flex items-center gap-2 py-2">
+            <div className="flex items-center gap-2 py-2 transform transition-transform hover:scale-110 hover:shadow-lg">
               <FiPhone />
               <h2>Contact</h2>
             </div>
             <Link
               to="/"
-              className="block w-[100px] h-[39px] py-2 bg-[#413FA0] text-white rounded-md mt-2 text-center"
+              className="block w-[100px] h-[39px] py-2 bg-[#413FA0] text-white rounded-md mt-2 text-center transform transition-transform hover:scale-110 hover:shadow-lg"
             >
               Sign in
             </Link>
@@ -113,6 +114,7 @@ const Navbar = () => {
         </div>
       )}
     </div>
+   </div>
   );
 };
 

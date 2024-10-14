@@ -10,6 +10,7 @@ import Dashboard from './components/Dashboard'
 
 
 
+
 import React, { useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -35,6 +36,7 @@ const router = createBrowserRouter([
         path: "/tokeninput",
         element: <TokenInput />
       },
+    
     ]
   },
   {

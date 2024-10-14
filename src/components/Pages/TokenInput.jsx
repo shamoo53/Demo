@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
 const TokenInput = () => {
   const [tokens, setTokens] = useState(['', '', '', '', '']);
+
+  useEffect(() => {
+    AOS.init({ duration: 1000 });
+  }, []);
 
   const handleChange = (e, index) => {
     const newTokens = [...tokens];
@@ -17,11 +21,9 @@ const TokenInput = () => {
   };
 
   return (
-    <div className="flex flex-col items-center mt-20"
-    data-aos="fade-down-right"
-    >
+    <div className="flex flex-col items-center mt-20" data-aos="fade-down-right">
       <h2 className="text-xl font-semibold mb-6">Enter token</h2>
-      <div className="flex space-x-2 mb-4">
+      <div className="flex space-x-2 mb-2">
         {tokens.map((token, index) => (
           <input
             key={index}
@@ -34,7 +36,7 @@ const TokenInput = () => {
           />
         ))}
       </div>
-     
+      <p className="text-sm leading-4 font-normal mt-8">Please insert the 5 Digit Token sent to your mail</p>
     </div>
   );
 };
