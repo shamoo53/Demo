@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import { useNavigate } from 'react-router-dom';
 
 const TokenInput = () => {
   const [tokens, setTokens] = useState(['', '', '', '', '']);
+  const navigate = useNavigate();
 
   useEffect(() => {
     AOS.init({ duration: 1000 });
@@ -17,6 +19,11 @@ const TokenInput = () => {
     // Move to the next input
     if (e.target.value && index < tokens.length - 1) {
       document.getElementById(`token-${index + 1}`).focus();
+    }
+
+    // Check if all inputs are filled
+    if (newTokens.every(token => token !== '')) {
+      navigate('/');  // Navigate to home page
     }
   };
 
