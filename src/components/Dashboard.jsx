@@ -61,6 +61,12 @@ export default function Example() {
     setEvents((prevEvents) => [...prevEvents, event]);
   };
 
+
+  const handleDelete = (index) => {
+    setEvents(prevEvents => prevEvents.filter((_, i) => i !== index));
+  };
+
+
   return (
     <>
       <div>
@@ -215,7 +221,7 @@ export default function Example() {
       
       {events.map((event, index) => (
         <div key={index} className='pt-4  w-full ' data-aos="fade-down-right">
-          <Cards data={[event]} />
+          <Cards data={[event]} onDelete={handleDelete} />
         </div>
       ))}
         <CardText BeeIcon={Bee} />

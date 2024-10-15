@@ -6,10 +6,8 @@ import Signin from "./components/Pages/Signin";
 import CreateAccount from "./components/Pages/CreateAccount";
 import TokenInput from "./components/Pages/TokenInput";
 import ForgottenPassword from "./components/Pages/ForgottenPassword";
-import Dashboard from './components/Dashboard' 
-
-
-
+import Dashboard from './components/Dashboard';
+import PageNotfound from './components/Pages/PageNotfound';
 
 import React, { useEffect } from 'react';
 import AOS from 'aos';
@@ -36,21 +34,20 @@ const router = createBrowserRouter([
         path: "/tokeninput",
         element: <TokenInput />
       },
-    
     ]
   },
   {
     path: "/dashboard",
     element: <DashLayout />,
     children: [
-      {
-         
-      }
-      
+      // Your dashboard routes here
     ]
+  },
+  {
+    path: "*", // Catch-all route for undefined paths
+    element: <PageNotfound />
   }
 ]);
-
 
 function App() {
   useEffect(() => {

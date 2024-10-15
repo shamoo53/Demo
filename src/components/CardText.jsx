@@ -61,6 +61,8 @@ const CardText = ({ BeeIcon }) => {
     },
   ];
 
+  
+
   return (
     
     <div className="bg-white shadow-md rounded-md p-3 w-fit xl:w-full   ">
