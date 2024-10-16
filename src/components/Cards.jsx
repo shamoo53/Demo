@@ -17,7 +17,7 @@ export default function Cards({ data, onDelete }) {
               <img src={item.Doris} alt="User Icon" className="h-6 w-6" />
               <div className="flex-1 text-gray-600 font-semibold pl-8 text-sm leading-5">{item.eventTitle}</div>
               <div className="flex-1 text-gray-600 font-semibold text-sm leading-5">{item.date}</div>
-              <div className="flex-1 text-gray-600 font-semibold text-sm leading-5 flex items-center">
+              <div className="flex-1 text-gray-600 font-semibold text-sm leading-5 pl-0 flex items-center">
                 <img src={Bee} alt="Bee Icon" className="h-6 w-6 mr-2" />
                 <span className="mr-16">{item.role}</span>
               </div>

@@ -9,35 +9,46 @@ import * as Yup from 'yup';
 
 export default function Signin() {
   const [showPassword, setShowPassword] = useState(false);
+
+  // useNavigate hook from react-router-dom for programmatic navigation
   const navigate = useNavigate();
 
+  // useEffect hook to initialize AOS animations on component mount
   useEffect(() => {
     AOS.init();
   }, []);
 
+  // Function to toggle the visibility of the password
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
+  // useFormik hook to manage form state, validation, and submission
   const formik = useFormik({
+    // Initial form values
     initialValues: {
       email: '',
       password: '',
     },
+    // Validation schema using Yup for form validation
     validationSchema: Yup.object({
-      email: Yup.string().email('Invalid email address').required('Email is required'),
+      email: Yup.string()
+        .email('Invalid email address') // Email must be a valid email address
+        .required('Email is required'), // Email field is required
       password: Yup.string()
-        .min(8, 'Password must be at least 8 characters long')
-        .matches(/[a-z]/, 'Password must contain at least one lowercase letter')
-        .matches(/[A-Z]/, 'Password must contain at least one uppercase letter')
-        .required('Password is required'),
+        .min(8, 'Password must be at least 8 characters long') // Password must be at least 8 characters
+        .matches(/[a-z]/, 'Password must contain at least one lowercase letter') // Password must contain at least one lowercase letter
+        .matches(/[A-Z]/, 'Password must contain at least one uppercase letter') // Password must contain at least one uppercase letter
+        .required('Password is required'), // Password field is required
     }),
+    // Function to handle form submission
     onSubmit: values => {
       // handle form submission
-      console.log(values);
-      navigate('/dashboard'); // navigate to another page after successful form submission
+      console.log(values); // Log form values to console
+      navigate('/dashboard'); // navigate to the dashboard page after successful form submission
     },
   });
+
 
   return (
     <>
