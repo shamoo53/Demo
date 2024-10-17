@@ -33,7 +33,7 @@ const navigation = [
 ];
 const userNavigation = [
   { name: 'Your profile', href: '#' },
-  { name: 'Sign out', href: '#' },
+  { name: 'Sign out', href: '/' },
 ];
 
 function classNames(...classes) {
@@ -49,22 +49,28 @@ export default function Example() {
     AOS.init({ duration: 1000 });
   }, []);
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
+// Function to open the modal by setting the state to true
+const openModal = () => {
+  setIsModalOpen(true);
+};
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
+// Function to close the modal by setting the state to false
+const closeModal = () => {
+  setIsModalOpen(false);
+};
 
-  const addEvent = (event) => {
-    setEvents((prevEvents) => [...prevEvents, event]);
-  };
+// Function to add a new event to the events array
+// Takes an event object as a parameter
+const addEvent = (event) => {
+  setEvents((prevEvents) => [...prevEvents, event]); // Adds the new event to the end of the events array
+};
 
+// Function to handle the deletion of an event
+// Takes an index as a parameter
+const handleDelete = (index) => {
+  setEvents(prevEvents => prevEvents.filter((_, i) => i !== index)); // Filters out the event at the specified index
+};
 
-  const handleDelete = (index) => {
-    setEvents(prevEvents => prevEvents.filter((_, i) => i !== index));
-  };
 
 
   return (
@@ -225,15 +231,9 @@ export default function Example() {
         </div>
       ))}
         <CardText BeeIcon={Bee} />
-        
         <CardText BeeIcon={newIcon} />
-      
-      
         <CardText BeeIcon={three} />
-      
-      
         <CardText BeeIcon={four} />
-      
         <CardText BeeIcon={five} />
         <CardText BeeIcon={seven} />
         <CardText BeeIcon={eight} />

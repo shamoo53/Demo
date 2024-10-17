@@ -1,54 +1,52 @@
 import { useState, useEffect } from "react";
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebase"; 
 import { useNavigate, Link } from "react-router-dom";
 import { BiShow, BiHide } from "react-icons/bi";
 import { MdOutlineMail } from "react-icons/md";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
 
 export default function Signin() {
   const [showPassword, setShowPassword] = useState(false);
-
-  // useNavigate hook from react-router-dom for programmatic navigation
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  // useEffect hook to initialize AOS animations on component mount
   useEffect(() => {
     AOS.init();
   }, []);
 
-  // Function to toggle the visibility of the password
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
-  // useFormik hook to manage form state, validation, and submission
   const formik = useFormik({
-    // Initial form values
     initialValues: {
       email: '',
       password: '',
     },
-    // Validation schema using Yup for form validation
     validationSchema: Yup.object({
-      email: Yup.string()
-        .email('Invalid email address') // Email must be a valid email address
-        .required('Email is required'), // Email field is required
-      password: Yup.string()
-        .min(8, 'Password must be at least 8 characters long') // Password must be at least 8 characters
-        .matches(/[a-z]/, 'Password must contain at least one lowercase letter') // Password must contain at least one lowercase letter
-        .matches(/[A-Z]/, 'Password must contain at least one uppercase letter') // Password must contain at least one uppercase letter
-        .required('Password is required'), // Password field is required
+      email: Yup.string().email('Invalid email address').required('Email is required'),
+      password: Yup.string().min(8, 'Password must be at least 8 characters long').required('Password is required'),
     }),
-    // Function to handle form submission
-    onSubmit: values => {
-      // handle form submission
-      console.log(values); // Log form values to console
-      navigate('/dashboard'); // navigate to the dashboard page after successful form submission
+    onSubmit: async (values) => {
+      const { email, password } = values;
+      try {
+        // Attempt to sign in the user
+        await signInWithEmailAndPassword(auth, email, password);
+        navigate('/dashboard'); // Redirect to the dashboard after successful sign-in
+      } catch (error) {
+        // Check if the user exists
+        if (error.code === 'auth/user-not-found') {
+          setError('Credentials do not match. Please try again.'); // Incorrect credentials
+        } else {
+          setError('No account found. Please create an account first.'); // No account exists
+        }
+      }
     },
   });
-
 
   return (
     <>
@@ -62,11 +60,9 @@ export default function Signin() {
             </div>
             <div className="flex justify-center">
               <form onSubmit={formik.handleSubmit} className="space-y-2 border-none w-[350px]">
+                {error && <div className="text-red-500 text-sm">{error}</div>} {/* Error message */}
                 <div data-aos="fade-right">
-                  <label
-                    htmlFor="email"
-                    className="block text-sm font-medium leading-6 text-gray-900"
-                  >
+                  <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                     Email
                   </label>
                   <div className="mt-1 relative">
@@ -76,7 +72,7 @@ export default function Signin() {
                       type="email"
                       required
                       autoComplete="email"
-                      className={`block bg-[#EBE7E7] w-full h-[48px] rounded-md border ${formik.touched.email && formik.errors.email ? 'border-red-500' : 'border-[#3A3A3A]'} pl-2 py-1.5 text-gray-900 shadow-sm outline outline-1 outline-[#3A3A3A] placeholder:text-gray-400 focus:ring-2  sm:text-sm sm:leading-6 pr-10`}
+                      className={`block bg-[#EBE7E7] w-full h-[48px] rounded-md border ${formik.touched.email && formik.errors.email ? 'border-red-500' : 'border-[#3A3A3A]'} pl-2 py-1.5 text-gray-900 shadow-sm outline outline-1 outline-[#3A3A3A] placeholder:text-gray-400 focus:ring-2 sm:text-sm sm:leading-6 pr-10`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.email}
@@ -89,10 +85,7 @@ export default function Signin() {
                 </div>
 
                 <div data-aos="fade-left">
-                  <label
-                    htmlFor="password"
-                    className="block text-sm font-medium leading-6 text-gray-900"
-                  >
+                  <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
                     Password
                   </label>
                   <div className="mt-1 relative">
@@ -102,7 +95,7 @@ export default function Signin() {
                       type={showPassword ? "text" : "password"}
                       required
                       autoComplete="current-password"
-                      className={`block bg-[#EBE7E7] w-full h-[48px] rounded-md border ${formik.touched.password && formik.errors.password ? 'border-red-500' : 'border-[#3A3A3A]'} pl-2 py-1.5 text-gray-900 shadow-sm outline outline-1 outline-[#3A3A3A] placeholder:text-gray-400 focus:ring-2  sm:text-sm sm:leading-6 pr-10`}
+                      className={`block bg-[#EBE7E7] w-full h-[48px] rounded-md border ${formik.touched.password && formik.errors.password ? 'border-red-500' : 'border-[#3A3A3A]'} pl-2 py-1.5 text-gray-900 shadow-sm outline outline-1 outline-[#3A3A3A] placeholder:text-gray-400 focus:ring-2 sm:text-sm sm:leading-6 pr-10`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.password}
@@ -110,31 +103,18 @@ export default function Signin() {
                     {formik.touched.password && formik.errors.password ? (
                       <div className="text-red-500 text-sm mt-1">{formik.errors.password}</div>
                     ) : null}
-                    <div
-                      onClick={togglePasswordVisibility}
-                      className="absolute right-3 top-3 text-gray-400 text-xl cursor-pointer"
-                    >
-                      {showPassword ? <BiHide /> : <BiShow />}
+                    <div onClick={togglePasswordVisibility} className="absolute right-3 top-3 text-gray-400 text-xl cursor-pointer">
+                      {showPassword ? <BiHide /> : <BiShow />}     
                     </div>
                   </div>
                   <div className="flex justify-between mt-1 mb-2 items-center">
                     <div className="flex items-center">
-                      <input
-                        type="checkbox"
-                        id="remember-me"
-                        className="mr-1"
-                      />
-                      <label htmlFor="remember-me" className="text-sm cursor-pointer font-semibold text-[#3A3A3A] hover:text-[#413FA0]"
-                        data-aos="zoom-in-right"
-                      >
+                      <input type="checkbox" id="remember-me" className="mr-1" />
+                      <label htmlFor="remember-me" className="text-sm cursor-pointer font-semibold text-[#3A3A3A] hover:text-[#413FA0]">
                         Remember me
                       </label>
                     </div>
-                    <Link
-                      to="/forgotten-password"
-                      className="font-semibold text-[#3A3A3A] hover:text-[#413FA0] text-sm leading-6"
-                      data-aos="zoom-in-left"
-                    >
+                    <Link to="/forgotten-password" className="font-semibold text-[#3A3A3A] hover:text-[#413FA0] text-sm leading-6">
                       Forgot password?
                     </Link>
                   </div>
@@ -165,14 +145,12 @@ export default function Signin() {
                 <div aria-hidden="true" className="absolute inset-0 flex items-center">
                   <div className="flex-grow border-t-2 border-[#CCCCCC]" />
                 </div>
-                <div className="relative flex justify-center text-sm font-medium leading-6"
-                  data-aos="zoom-in-right"
-                >
+                <div className="relative flex justify-center text-sm font-medium leading-6" data-aos="zoom-in-right">
                   <span className="bg-white px-3 text-gray-900">Or continue with</span>
                 </div>
               </div>
 
-              <div className="mt-4 mb-3 flex w-full h-[48px] justify-center rounded-md bg-[#EBE7E7] px-3 py-1.5 text-[#000000] text-sm font-semibold leading-6 shadow-sm hover:bg-[#EBE7E7] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+              <div className="mt-4 flex w-full mb-3 h-[48px] justify-center rounded-md bg-[#EBE7E7] px-3 py-1.5 text-[#000000] text-sm font-semibold leading-6 shadow-sm hover:bg-[#EBE7E7] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                 <a
                   href="#"
                   className="flex items-center justify-center gap-3 w-full h-full"
@@ -201,7 +179,7 @@ export default function Signin() {
             </div>
             <div>
               <p className="mt-0 text-center text-base text-gray-500 w-full">
-                By clicking the sign  agree to our {' '}
+                By clicking the sign  agree to  {' '}
                 <a href="#" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
                   terms <span className="text-gray-500">and</span> policies.
                 </a>

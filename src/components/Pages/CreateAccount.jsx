@@ -5,10 +5,14 @@ import { Link } from "react-router-dom";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { useFormik } from 'formik';
+import { createUserWithEmailAndPassword} from "firebase/auth";
+import { auth } from "../../firebase";
 import * as Yup from 'yup';
+import { useNavigate } from "react-router-dom";
 
 export default function CreateAccount() {
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     AOS.init();
@@ -31,8 +35,27 @@ export default function CreateAccount() {
         .matches(/[A-Z]/, 'Password must contain at least one uppercase letter')
         .required(' Password is Required'),
     }),
-    onSubmit: values => {
+    onSubmit: async (values) => {
       // handle form submission
+      const {email, password} = values
+      try {
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+         email,
+         password
+        );
+  
+        const user = userCredential.user;
+        console.log(user);
+  
+        formik.resetForm();
+         navigate('/')
+      } catch (error) {
+        // const errorCode = error.code;
+        // const errorMessage = error.message;
+  
+        console.log(error);
+      }
       console.log(values);
     },
   });
@@ -125,12 +148,12 @@ export default function CreateAccount() {
                 </div>
 
                 <div data-aos="fade-down">
-                  <Link to='/'
+                  <button 
                     type="submit"
                     className="flex w-full h-[48px] mb-4 justify-center rounded-md bg-[#413FA0] px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-[#413FA0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
                     Create Account
-                  </Link>
+                  </button>
                 </div>
 
                 <Link to='/'
@@ -180,7 +203,7 @@ export default function CreateAccount() {
               </div>
             </div>
             <p className="mt-0 text-center text-base text-gray-500 w-full">
-              By clicking the sign you agree to our{' '}
+              By clicking the sign  agree to our{' '}
               <a href="#" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
                 terms <span className="text-gray-500">and</span> policies.
               </a>
