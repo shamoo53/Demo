@@ -29,21 +29,7 @@ export default function Signin() {
       email: Yup.string().email('Invalid email address').required('Email is required'),
       password: Yup.string().min(8, 'Password must be at least 8 characters long').required('Password is required'),
     }),
-    onSubmit: async (values) => {
-      const { email, password } = values;
-      try {
-        // Attempt to sign in the user
-        await signInWithEmailAndPassword(auth, email, password);
-        navigate('/dashboard'); // Redirect to the dashboard after successful sign-in
-      } catch (error) {
-        // Check if the user exists
-        if (error.code === 'auth/user-not-found') {
-          setError('Credentials do not match. Please try again.'); // Incorrect credentials
-        } else {
-          setError('No account found. Please create an account first.'); // No account exists
-        }
-      }
-    },
+  
   });
 
   return (
@@ -119,13 +105,13 @@ export default function Signin() {
                 </div>
 
                 <div>
-                  <button
+                  <Link to='/dashboard'
                     type="submit"
                     className="flex w-full h-[48px] mb-4 justify-center rounded-md bg-[#413FA0] px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-[#413FA0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     data-aos="zoom-in-right"
                   >
                     Sign in
-                  </button>
+                  </Link>
                 </div>
 
                 <Link
