@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../firebase"; 
 import { useNavigate, Link } from "react-router-dom";
 import { BiShow, BiHide } from "react-icons/bi";
 import { MdOutlineMail } from "react-icons/md";
@@ -190,4 +188,4 @@ export default function Signin() {
       </div>
     </>
   );
-}
+} 
