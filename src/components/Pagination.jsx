@@ -1,12 +1,11 @@
-import React from 'react';
+import PropTypes from 'prop-types';
 
-export default function Pagination({ currentPage, totalPages, onPageChange, themeColor = '#413FA0' }) {
+export default function Pagination({ currentPage, totalPages, onPageChange, themeColor }) {
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   return (
     <div className="flex items-center justify-center border-t border-gray-200 px-4 py-4 sm:px-6 mt-4">
       <nav aria-label="Pagination" className="isolate inline-flex rounded-md space-x-2">
-        {/* Previous */}
         <button
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
@@ -16,7 +15,6 @@ export default function Pagination({ currentPage, totalPages, onPageChange, them
           &laquo;
         </button>
 
-        {/* Page numbers */}
         {pages.map((page) => (
           <button
             key={page}
@@ -32,7 +30,6 @@ export default function Pagination({ currentPage, totalPages, onPageChange, them
           </button>
         ))}
 
-        {/* Next */}
         <button
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
@@ -45,3 +42,14 @@ export default function Pagination({ currentPage, totalPages, onPageChange, them
     </div>
   );
 }
+
+Pagination.propTypes = {
+  currentPage: PropTypes.number.isRequired,
+  totalPages: PropTypes.number.isRequired,
+  onPageChange: PropTypes.func.isRequired,
+  themeColor: PropTypes.string,
+};
+
+Pagination.defaultProps = {
+  themeColor: '#413FA0',
+};

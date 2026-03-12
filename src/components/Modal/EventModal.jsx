@@ -1,4 +1,5 @@
 import { Dialog } from '@headlessui/react';
+import PropTypes from 'prop-types';
 import Doris from '../../assets/doris.svg';
 import { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
@@ -7,14 +8,11 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 const emptyEvent = { eventTitle: '', description: '', date: null, role: '' };
 
-export default function EventModal({ isOpen, closeModal, addEvent, themeColor = '#413FA0' }) {
+export default function EventModal({ isOpen, closeModal, addEvent, themeColor }) {
   const [event, setEvent] = useState(emptyEvent);
 
-  // Reset form every time the modal opens
   useEffect(() => {
-    if (isOpen) {
-      setEvent(emptyEvent);
-    }
+    if (isOpen) setEvent(emptyEvent);
   }, [isOpen]);
 
   const handleSubmit = (e) => {
@@ -41,7 +39,6 @@ export default function EventModal({ isOpen, closeModal, addEvent, themeColor = 
     <Dialog open={isOpen} onClose={closeModal} className="relative z-50">
       <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
         <div className="bg-white rounded-lg p-8 w-full max-w-lg relative shadow-xl">
-          {/* Header */}
           <div className="flex justify-center items-center border-b pb-3 relative">
             <button
               type="button"
@@ -56,14 +53,12 @@ export default function EventModal({ isOpen, closeModal, addEvent, themeColor = 
               onClick={closeModal}
               className="absolute right-4 top-2 text-2xl font-bold text-gray-400 hover:text-gray-700"
             >
-              ×
+              &times;
             </button>
           </div>
 
-          {/* Form */}
           <form onSubmit={handleSubmit}>
             <div className="mt-4 space-y-4">
-              {/* Event Title */}
               <div>
                 <label htmlFor="eventTitle" className="block mb-1 text-sm font-semibold text-gray-700">
                   Event title
@@ -73,14 +68,12 @@ export default function EventModal({ isOpen, closeModal, addEvent, themeColor = 
                   id="eventTitle"
                   name="eventTitle"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2"
-                  style={{ '--tw-ring-color': themeColor }}
                   value={event.eventTitle}
                   onChange={handleChange}
                   required
                 />
               </div>
 
-              {/* Description */}
               <div>
                 <label htmlFor="description" className="block mb-1 text-sm font-semibold text-gray-700">
                   Description
@@ -95,7 +88,6 @@ export default function EventModal({ isOpen, closeModal, addEvent, themeColor = 
                 />
               </div>
 
-              {/* Date + Role */}
               <div className="flex gap-4">
                 <div className="w-full">
                   <label className="block mb-1 text-sm font-semibold text-gray-700">Date</label>
@@ -128,7 +120,6 @@ export default function EventModal({ isOpen, closeModal, addEvent, themeColor = 
               </div>
             </div>
 
-            {/* Submit */}
             <div className="mt-6 flex justify-center">
               <button
                 type="submit"
@@ -144,3 +135,14 @@ export default function EventModal({ isOpen, closeModal, addEvent, themeColor = 
     </Dialog>
   );
 }
+
+EventModal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  closeModal: PropTypes.func.isRequired,
+  addEvent: PropTypes.func.isRequired,
+  themeColor: PropTypes.string,
+};
+
+EventModal.defaultProps = {
+  themeColor: '#413FA0',
+};

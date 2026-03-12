@@ -1,5 +1,7 @@
+import daisyui from 'daisyui';
+
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -7,13 +9,12 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        inter: ['Inter', 'sans-serif'], // Set Inter as your custom font
+        inter: ['Inter', 'sans-serif'],
       },
     },
   },
-  plugins: [require('daisyui')],
-
+  plugins: [daisyui],
   daisyui: {
-    themes: ['light']
-  }
-}
+    themes: ['light'],
+  },
+};

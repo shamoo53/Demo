@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import hamburgericon from '../assets/hamburger.svg';
 import userIcon from '../assets/user-icon.svg';
 import { RxDashboard } from "react-icons/rx";

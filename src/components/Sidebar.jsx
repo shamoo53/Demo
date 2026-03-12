@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { FaTh, FaCog } from 'react-icons/fa';
 
 const Sidebar = () => {
