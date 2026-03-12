@@ -1,15 +1,14 @@
-import Navbar from "./components/Navbar";
+
 import Layout from "./components/Pages/Layout";
 import DashLayout from './components/DashLayout';
-import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Signin from "./components/Pages/Signin";
 import CreateAccount from "./components/Pages/CreateAccount";
 import TokenInput from "./components/Pages/TokenInput";
 import ForgottenPassword from "./components/Pages/ForgottenPassword";
-import Dashboard from './components/Dashboard';
 import PageNotfound from './components/Pages/PageNotfound';
 
-import React, { useEffect } from 'react';
+import  { useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 

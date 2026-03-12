@@ -1,131 +1,125 @@
 import { Dialog } from '@headlessui/react';
 import Doris from '../../assets/doris.svg';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import { format } from 'date-fns';
 import 'react-datepicker/dist/react-datepicker.css';
 
-export default function EventModal({ isOpen, closeModal, addEvent }) {
-  // useState hook to manage the state of the event form
-  const [event, setEvent] = useState({ eventTitle: '', description: '', date: null, role: '', Doris: Doris });
+const emptyEvent = { eventTitle: '', description: '', date: null, role: '' };
 
-  // Function to handle form submission
+export default function EventModal({ isOpen, closeModal, addEvent, themeColor = '#413FA0' }) {
+  const [event, setEvent] = useState(emptyEvent);
+
+  // Reset form every time the modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setEvent(emptyEvent);
+    }
+  }, [isOpen]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Add event with formatted date
     addEvent({
       ...event,
+      dorisIcon: Doris,
       date: event.date ? format(event.date, 'MMMM dd, yyyy') : '',
     });
-    // Close the modal after submitting
     closeModal();
   };
 
-  // Function to handle changes in the input fields
   const handleChange = (e) => {
-    setEvent({
-      ...event,
-      [e.target.name]: e.target.value,
-    });
+    setEvent((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  // Function to handle date change
   const handleDateChange = (date) => {
-    setEvent({
-      ...event,
-      date: date,
-    });
+    setEvent((prev) => ({ ...prev, date }));
   };
 
-  // If the modal is not open, do not render anything
   if (!isOpen) return null;
 
   return (
     <Dialog open={isOpen} onClose={closeModal} className="relative z-50">
-      {/* Overlay to darken the background when the modal is open */}
       <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
-        {/* Modal container */}
-        <div className="bg-white rounded-lg p-8 w-full max-w-lg relative">
-          {/* Modal Header */}
+        <div className="bg-white rounded-lg p-8 w-full max-w-lg relative shadow-xl">
+          {/* Header */}
           <div className="flex justify-center items-center border-b pb-3 relative">
-            {/* Plus button, currently not functional */}
-            <button className="w-6 h-6 bg-[#000000] text-white rounded-full flex items-center justify-center hover:bg-[#000000] mr-2">
+            <button
+              type="button"
+              className="w-6 h-6 text-white rounded-full flex items-center justify-center mr-2"
+              style={{ backgroundColor: themeColor }}
+            >
               +
             </button>
-            {/* Modal title */}
             <span className="text-lg font-semibold">Add Event</span>
-            {/* Close button */}
             <button
+              type="button"
               onClick={closeModal}
-              className="absolute right-4 top-2 text-2xl font-bold text-gray-600 hover:text-gray-800"
+              className="absolute right-4 top-2 text-2xl font-bold text-gray-400 hover:text-gray-700"
             >
               ×
             </button>
           </div>
 
-          {/* Modal Body - Form */}
+          {/* Form */}
           <form onSubmit={handleSubmit}>
-            <div className="mt-4">
-              {/* Event Title Input */}
-              <div className="mb-4">
-                <label htmlFor="eventTitle" className="block mb-2 font-semibold">
+            <div className="mt-4 space-y-4">
+              {/* Event Title */}
+              <div>
+                <label htmlFor="eventTitle" className="block mb-1 text-sm font-semibold text-gray-700">
                   Event title
                 </label>
                 <input
                   type="text"
                   id="eventTitle"
                   name="eventTitle"
-                  className="w-full px-3 py-2 border rounded-md"
-                  placeholder=""
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2"
+                  style={{ '--tw-ring-color': themeColor }}
                   value={event.eventTitle}
                   onChange={handleChange}
                   required
                 />
               </div>
 
-              {/* Description Input */}
-              <div className="mb-4">
-                <label htmlFor="description" className="block mb-2 font-semibold">
+              {/* Description */}
+              <div>
+                <label htmlFor="description" className="block mb-1 text-sm font-semibold text-gray-700">
                   Description
                 </label>
                 <input
                   id="description"
                   name="description"
-                  rows="3"
-                  className="w-full px-3 py-2 border rounded-md"
-                  placeholder=""
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2"
                   value={event.description}
                   onChange={handleChange}
                   required
                 />
               </div>
 
-              {/* Date and Role Inputs */}
-              <div className="flex justify-between gap-4">
+              {/* Date + Role */}
+              <div className="flex gap-4">
                 <div className="w-full">
-                  <label className="block mb-2 font-semibold">Date</label>
+                  <label className="block mb-1 text-sm font-semibold text-gray-700">Date</label>
                   <DatePicker
                     selected={event.date}
                     onChange={handleDateChange}
-                    className="w-full px-3 py-2 border rounded-md"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
                     placeholderText="Select a date"
                     required
                   />
                 </div>
-
                 <div className="w-full">
-                  <label htmlFor="role" className="block mb-2 font-semibold">
+                  <label htmlFor="role" className="block mb-1 text-sm font-semibold text-gray-700">
                     Role
                   </label>
                   <select
                     id="role"
                     name="role"
-                    className="w-full px-3 py-2 border rounded-md"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none"
                     value={event.role}
                     onChange={handleChange}
                     required
                   >
-                    <option value="" disabled></option>
+                    <option value="" disabled>Select role</option>
                     <option value="Doris K. John">Doris K. John</option>
                     <option value="User">User</option>
                     <option value="Participant">Participant</option>
@@ -134,14 +128,14 @@ export default function EventModal({ isOpen, closeModal, addEvent }) {
               </div>
             </div>
 
-            {/* Modal Footer - Submit Button */}
+            {/* Submit */}
             <div className="mt-6 flex justify-center">
               <button
                 type="submit"
-                className="bg-[#413FA0] text-white rounded-md hover:bg-[#413FA0]"
-                style={{ width: '282px', height: '48px', borderRadius: '5px' }}
+                className="text-white text-sm font-semibold rounded-md hover:opacity-90 transition-opacity"
+                style={{ width: '282px', height: '48px', backgroundColor: themeColor }}
               >
-                Add
+                Add Event
               </button>
             </div>
           </form>

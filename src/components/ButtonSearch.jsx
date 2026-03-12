@@ -1,5 +1,5 @@
 
-import React from 'react';
+
 import { FiPlus, FiSearch } from 'react-icons/fi'; 
 
 
